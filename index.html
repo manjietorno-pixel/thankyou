@@ -3,203 +3,522 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>Mother's Day Message Generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#FDF8F4" />
+
+  <!-- SEO & Social Share -->
+  <title>For a Mother's Soul — Scripture & Encouragement</title>
+  <meta name="description" content="Bible verses and encouragement for every season of motherhood. Select how you're feeling today." />
+  <meta property="og:title" content="For a Mother's Soul 🌷" />
+  <meta property="og:description" content="Scripture & encouragement for every feeling. Tap to receive your verse today." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FDF8F4;
+      --card: #ffffff;
+      --text-dark: #3A2E28;
+      --text-mid: #7A6858;
+      --text-light: #C2A98A;
+      --accent: #B8967E;
+      --shadow: rgba(90,60,40,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: 'Nunito', sans-serif;
-      background: #FDF8F4;
+      background: var(--bg);
+      color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 40px 16px 80px;
+      transition: background 0.6s ease;
     }
-    .header { text-align: center; margin-bottom: 32px; animation: fadeDown 0.6s ease both; }
-    .header .icon { font-size: 48px; display: block; animation: float 3.5s ease-in-out infinite; }
-    .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 6vw, 34px); color: #3A2E28; margin: 10px 0 5px; }
-    .header p { font-size: 13px; color: #A08060; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; }
-    .divider { color: #C2A98A; letter-spacing: 10px; font-size: 11px; margin: 12px 0; opacity: 0.5; }
-    .card { background: #fff; border-radius: 24px; padding: 32px 28px; box-shadow: 0 12px 40px rgba(90,60,40,0.10); border: 1px solid #F0E0D0; max-width: 480px; width: 100%; animation: fadeUp 0.7s 0.2s ease both; }
-    label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #B8967E; margin-bottom: 8px; }
-    .name-row { display: flex; gap: 10px; margin-bottom: 20px; }
-    input[type="text"] { flex: 1; padding: 13px 18px; border-radius: 50px; border: 2px solid #E8D5C4; font-family: 'Nunito', sans-serif; font-size: 15px; color: #3A2E28; outline: none; transition: border 0.2s; background: #FDF8F4; }
-    input[type="text"]:focus { border-color: #C4724A; }
-    input[type="text"]::placeholder { color: #C2A98A; }
-    .gen-btn { padding: 13px 22px; border-radius: 50px; border: none; background: linear-gradient(135deg, #C4724A, #E8A98A); color: #fff; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap; transition: transform 0.18s; box-shadow: 0 4px 14px rgba(196,114,74,0.35); -webkit-tap-highlight-color: transparent; }
-    .gen-btn:hover { transform: scale(1.04); }
-    .gen-btn:active { transform: scale(0.97); }
-    .template-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #B8967E; margin-bottom: 10px; display: block; }
-    .templates { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-    .tmpl-btn { padding: 8px 16px; border-radius: 40px; border: 2px solid #E8D5C4; background: #fff; color: #A08060; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.18s; -webkit-tap-highlight-color: transparent; }
-    .tmpl-btn.active, .tmpl-btn:hover { background: #C4724A; color: #fff; border-color: #C4724A; }
-    .msg-box { background: #FDF8F4; border: 2px solid #E8D5C4; border-radius: 16px; padding: 20px; font-size: 15px; line-height: 1.8; color: #3A2E28; min-height: 160px; white-space: pre-wrap; font-family: 'Nunito', sans-serif; margin-bottom: 16px; transition: border 0.3s; word-break: break-word; }
-    .msg-box.ready { border-color: #C4724A55; }
-    .placeholder-msg { color: #C2A98A; font-style: italic; font-size: 14px; text-align: center; display: block; margin-top: 20px; }
-    .actions { display: flex; gap: 10px; }
-    .action-btn { flex: 1; padding: 13px; border-radius: 50px; border: 2px solid #E8D5C4; background: #fff; color: #C4724A; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.18s; -webkit-tap-highlight-color: transparent; }
-    .action-btn:hover { background: #C4724A; color: #fff; border-color: #C4724A; transform: translateY(-2px); }
-    .action-btn:active { transform: translateY(0); }
-    .action-btn.primary { background: linear-gradient(135deg, #C4724A, #E8A98A); color: #fff; border: none; box-shadow: 0 4px 14px rgba(196,114,74,0.30); }
-    .action-btn.primary:hover { opacity: 0.9; transform: translateY(-2px); }
-    .counter { text-align: center; margin-top: 20px; font-size: 12px; color: #C2A98A; letter-spacing: 1px; }
-    .count-num { font-size: 28px; font-family: 'Playfair Display', serif; color: #C4724A; display: block; margin-bottom: 2px; }
-    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(70px); background: #3A2E28; color: #fff; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; padding: 12px 24px; border-radius: 40px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); transition: transform 0.4s ease, opacity 0.4s ease; opacity: 0; z-index: 999; white-space: nowrap; }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      animation: fadeDown 0.7s ease both;
+    }
+    .header .rose { font-size: 52px; display: block; animation: float 4s ease-in-out infinite; }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 7vw, 42px);
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.15;
+      margin: 10px 0 6px;
+    }
+    .header .sub {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .divider {
+      color: var(--accent);
+      opacity: 0.45;
+      letter-spacing: 10px;
+      font-size: 12px;
+      margin: 14px 0;
+    }
+    .header .prompt {
+      font-size: 16px;
+      color: var(--text-mid);
+      font-style: italic;
+    }
+
+    /* ── MOOD GRID ── */
+    .moods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 520px;
+      width: 100%;
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .mood-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 20px;
+      border-radius: 50px;
+      border: 2px solid var(--btn-accent, #ddd);
+      background: #fff;
+      color: var(--btn-color, #888);
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.25s ease, color 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mood-btn .emoji { font-size: 19px; }
+    .mood-btn:hover, .mood-btn:focus {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px var(--btn-shadow, rgba(0,0,0,0.10));
+      outline: none;
+    }
+    .mood-btn:active { transform: translateY(0); }
+    .mood-btn.active {
+      background: var(--btn-color);
+      color: #fff;
+      border-color: var(--btn-color);
+      box-shadow: 0 6px 18px var(--btn-shadow);
+    }
+
+    /* ── VERSE CARD ── */
+    .verse-wrap {
+      max-width: 500px;
+      width: 100%;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .verse-card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 36px 28px 28px;
+      box-shadow: 0 16px 48px var(--card-shadow, rgba(0,0,0,0.08));
+      border: 1px solid var(--card-border, #eee);
+      text-align: center;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .verse-card.hidden { opacity: 0; transform: translateY(14px) scale(0.98); pointer-events: none; }
+    .verse-card.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    .card-bar {
+      width: 50px; height: 4px;
+      border-radius: 2px;
+      margin: 0 auto 22px;
+    }
+
+    .open-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 80px;
+      line-height: 0.4;
+      margin-bottom: 18px;
+      opacity: 0.35;
+    }
+
+    .verse-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(16px, 4.5vw, 21px);
+      font-style: italic;
+      color: var(--text-dark);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .verse-ref {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 26px;
+    }
+
+    .next-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 30px;
+      border-radius: 50px;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 6px 18px var(--btn-shadow, rgba(0,0,0,0.15));
+      transition: transform 0.18s, box-shadow 0.18s;
+      -webkit-tap-highlight-color: transparent;
+      margin-bottom: 14px;
+    }
+    .next-btn:hover { transform: scale(1.04); }
+    .next-btn:active { transform: scale(0.97); }
+
+    /* Share row */
+    .share-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 40px;
+      border: 1.5px solid var(--btn-accent, #ddd);
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--btn-color, #888);
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .share-btn:hover { background: var(--btn-color); color: #fff; transform: scale(1.03); }
+    .share-btn:active { transform: scale(0.97); }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--text-light);
+      font-size: 17px;
+      line-height: 1.7;
+      margin-top: 8px;
+      opacity: 0.85;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 50px;
+      text-align: center;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #3A2E28;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      padding: 12px 24px;
+      border-radius: 40px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      z-index: 999;
+      white-space: nowrap;
+    }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    @keyframes fadeDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
   </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header class="header">
-    <span class="icon">💌</span>
-    <h1>Mother's Day DM Generator</h1>
-    <p>Personalized Messages for Every Mom</p>
+    <span class="rose">🌷</span>
+    <h1>For a Mother's Soul</h1>
+    <p class="sub">Scripture &amp; Encouragement</p>
     <div class="divider">✦ ✦ ✦</div>
+    <p class="prompt">How are you feeling today, Mama?</p>
   </header>
 
-  <div class="card">
-    <label>Mom's Name</label>
-    <div class="name-row">
-      <input type="text" id="nameInput" placeholder="e.g. Maria, Tita Rose…" maxlength="40" />
-      <button class="gen-btn" onclick="generateMessage()">✦ Generate</button>
-    </div>
+  <!-- MOOD BUTTONS -->
+  <div class="moods" id="moods"></div>
 
-    <span class="template-label">Message Style</span>
-    <div class="templates">
-      <button class="tmpl-btn active" onclick="setTemplate(0, this)">Warm 🌸</button>
-      <button class="tmpl-btn" onclick="setTemplate(1, this)">Faith-filled 🙏</button>
-      <button class="tmpl-btn" onclick="setTemplate(2, this)">Short & Sweet 💛</button>
-      <button class="tmpl-btn" onclick="setTemplate(3, this)">Heartfelt 🤍</button>
-    </div>
-
-    <div class="msg-box" id="msgBox">
-      <span class="placeholder-msg">Enter a name above and tap Generate 🌷</span>
-    </div>
-
-    <div class="actions">
-      <button class="action-btn" onclick="copyMessage()">📋 Copy</button>
-      <button class="action-btn primary" onclick="shareMessage()">📤 Share</button>
-    </div>
-
-    <div class="counter">
-      <span class="count-num" id="countNum">0</span>
-      messages sent today 🌷
+  <!-- VERSE AREA -->
+  <div class="verse-wrap" id="verseWrap">
+    <p class="empty" id="emptyState">Select a feeling above to receive<br>your scripture today 🌿</p>
+    <div class="verse-card hidden" id="verseCard">
+      <div class="card-bar" id="cardBar"></div>
+      <div class="open-quote" id="quoteColor">"</div>
+      <p class="verse-text" id="verseText"></p>
+      <div class="divider" id="cardDivider">✦ ✦ ✦</div>
+      <p class="verse-ref" id="verseRef"></p>
+      <button class="next-btn" id="nextBtn" onclick="nextVerse()">Another Verse ✦</button>
+      <div class="share-row">
+        <button class="share-btn" id="copyBtn" onclick="copyVerse()">📋 Copy</button>
+        <button class="share-btn" id="shareBtn" onclick="shareVerse()">🔗 Share</button>
+      </div>
     </div>
   </div>
 
+  <!-- FOOTER -->
+  <footer class="footer">You are seen · You are loved · You are enough 🤍</footer>
+
+  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
   <script>
-    const LINK = "https://luminous-melomakarona-9a3d83.netlify.app/";
-    let selectedTemplate = 0;
-    let currentMessage = "";
-
-    // Restore counter
-    let sentCount = parseInt(localStorage.getItem('sentCount') || '0');
-    const today = new Date().toDateString();
-    if (localStorage.getItem('sentDate') !== today) {
-      sentCount = 0;
-      localStorage.setItem('sentDate', today);
-    }
-    document.getElementById('countNum').textContent = sentCount;
-
-    function buildMessage(name, idx) {
-      const msgs = [
-        // 0 Warm
-        "🌷 Happy Mother's Day, " + name + "! 🌷\n\nWishing you a day filled with love, rest, and joy — you deserve it all!\n\nI made this little something for you. Whether you're feeling tired, grateful, overwhelmed, or happy today — there's a Bible verse here just for you 💕\n\n👉 " + LINK + "\n\nYou are seen. You are loved. You are enough. 🤍",
-        // 1 Faith-filled
-        "🙏 Happy Mother's Day, dear " + name + "!\n\n\"Her children arise and call her blessed.\" — Proverbs 31:28\n\nToday and every day, you are a blessing to everyone around you. I put together something special — Bible verses for every feeling a mama might have. Open it and let God speak to your heart today 💛\n\n👉 " + LINK + "\n\nGod bless you, Mama. 🌸",
-        // 2 Short & Sweet
-        "Happy Mother's Day, " + name + "! 🌷\n\nA little gift for you — Bible verses for whatever you're feeling today 💕\n\n👉 " + LINK + "\n\nYou are loved! 🤍",
-        // 3 Heartfelt
-        "💌 To the amazing " + name + ",\n\nHappy Mother's Day! Being a mom is one of the hardest and most beautiful things in the world — and you do it with so much love and grace.\n\nI wanted to send you something meaningful today. This has Bible verses for every feeling — because motherhood has ALL the feelings! 😊\n\n👉 " + LINK + "\n\nThank you for all that you do. You are truly a gift. 🌷🤍"
-      ];
-      return msgs[idx];
-    }
-
-    function setTemplate(idx, btn) {
-      selectedTemplate = idx;
-      document.querySelectorAll('.tmpl-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (document.getElementById('nameInput').value.trim()) generateMessage();
-    }
-
-    function generateMessage() {
-      const name = document.getElementById('nameInput').value.trim();
-      const box = document.getElementById('msgBox');
-      if (!name) {
-        box.innerHTML = '<span class="placeholder-msg">Enter a name above and tap Generate 🌷</span>';
-        box.classList.remove('ready');
-        currentMessage = "";
-        return;
+    const data = {
+      tired: {
+        label: "I Am Tired", emoji: "😴",
+        color: "#7B6FA0", accent: "#B8A9D9", light: "#F0EDF8",
+        shadow: "rgba(123,111,160,0.28)",
+        verses: [
+          { text: "Come to me, all you who are weary and burdened, and I will give you rest.", ref: "Matthew 11:28" },
+          { text: "He gives strength to the weary and increases the power of the weak.", ref: "Isaiah 40:29" },
+          { text: "The Lord is my shepherd; He makes me lie down in green pastures; He leads me beside still waters. He restores my soul.", ref: "Psalm 23:1-3" },
+          { text: "Those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary.", ref: "Isaiah 40:31" },
+          { text: "Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.", ref: "Galatians 6:9" },
+        ]
+      },
+      happy: {
+        label: "I Am Happy", emoji: "🌸",
+        color: "#C4724A", accent: "#E8A98A", light: "#FDF3EF",
+        shadow: "rgba(196,114,74,0.28)",
+        verses: [
+          { text: "This is the day that the Lord has made; let us rejoice and be glad in it.", ref: "Psalm 118:24" },
+          { text: "The joy of the Lord is your strength.", ref: "Nehemiah 8:10" },
+          { text: "Rejoice in the Lord always. I will say it again: Rejoice!", ref: "Philippians 4:4" },
+          { text: "You have filled my heart with greater joy than when their grain and new wine abound.", ref: "Psalm 4:7" },
+          { text: "A joyful heart is good medicine, but a crushed spirit dries up the bones.", ref: "Proverbs 17:22" },
+        ]
+      },
+      help: {
+        label: "I Need Help", emoji: "🙏",
+        color: "#4A7DA8", accent: "#90BDD8", light: "#EEF4FA",
+        shadow: "rgba(74,125,168,0.28)",
+        verses: [
+          { text: "I lift up my eyes to the mountains — where does my help come from? My help comes from the Lord, the Maker of heaven and earth.", ref: "Psalm 121:1-2" },
+          { text: "God is our refuge and strength, an ever-present help in trouble.", ref: "Psalm 46:1" },
+          { text: "I can do all this through him who gives me strength.", ref: "Philippians 4:13" },
+          { text: "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you.", ref: "Matthew 7:7" },
+          { text: "Call on me in the day of trouble; I will deliver you, and you will honor me.", ref: "Psalm 50:15" },
+        ]
+      },
+      money: {
+        label: "Money is Tight", emoji: "💛",
+        color: "#8B7040", accent: "#C8A870", light: "#FAF5EE",
+        shadow: "rgba(139,112,64,0.28)",
+        verses: [
+          { text: "And my God will meet all your needs according to the riches of his glory in Christ Jesus.", ref: "Philippians 4:19" },
+          { text: "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.", ref: "Philippians 4:6" },
+          { text: "The Lord is my shepherd, I lack nothing.", ref: "Psalm 23:1" },
+          { text: "Seek first his kingdom and his righteousness, and all these things will be given to you as well.", ref: "Matthew 6:33" },
+          { text: "Cast all your anxiety on him because he cares for you.", ref: "1 Peter 5:7" },
+        ]
+      },
+      lonely: {
+        label: "I Feel Lonely", emoji: "🤍",
+        color: "#4A9080", accent: "#88C4B8", light: "#EEF7F4",
+        shadow: "rgba(74,144,128,0.28)",
+        verses: [
+          { text: "The Lord himself goes before you and will be with you; he will never leave you nor forsake you. Do not be afraid; do not be discouraged.", ref: "Deuteronomy 31:8" },
+          { text: "Even though I walk through the darkest valley, I will fear no evil, for you are with me.", ref: "Psalm 23:4" },
+          { text: "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.", ref: "Joshua 1:9" },
+          { text: "God sets the lonely in families; he leads out the prisoners with singing.", ref: "Psalm 68:6" },
+          { text: "You are precious and honored in my sight, and I love you.", ref: "Isaiah 43:4" },
+        ]
+      },
+      overwhelmed: {
+        label: "I'm Overwhelmed", emoji: "🌊",
+        color: "#6A5880", accent: "#B0A0C8", light: "#F4F0F7",
+        shadow: "rgba(106,88,128,0.28)",
+        verses: [
+          { text: "The peace of God, which transcends all understanding, will guard your hearts and minds in Christ Jesus.", ref: "Philippians 4:7" },
+          { text: "Cast your cares on the Lord and he will sustain you; he will never let the righteous be shaken.", ref: "Psalm 55:22" },
+          { text: "She is clothed with strength and dignity; she can laugh at the days to come.", ref: "Proverbs 31:25" },
+          { text: "Peace I leave with you; my peace I give you. Do not let your hearts be troubled and do not be afraid.", ref: "John 14:27" },
+          { text: "Trust in the Lord with all your heart and lean not on your own understanding.", ref: "Proverbs 3:5" },
+        ]
+      },
+      grateful: {
+        label: "I'm Grateful", emoji: "✨",
+        color: "#9E6B5A", accent: "#D4A898", light: "#FAF1ED",
+        shadow: "rgba(158,107,90,0.28)",
+        verses: [
+          { text: "Give thanks to the Lord, for he is good; his love endures forever.", ref: "Psalm 107:1" },
+          { text: "Every good and perfect gift is from above, coming down from the Father of heavenly lights.", ref: "James 1:17" },
+          { text: "Her children arise and call her blessed; her husband also, and he praises her.", ref: "Proverbs 31:28" },
+          { text: "Give thanks in all circumstances; for this is God's will for you in Christ Jesus.", ref: "1 Thessalonians 5:18" },
+          { text: "The Lord has done great things for us, and we are filled with joy.", ref: "Psalm 126:3" },
+        ]
       }
-      currentMessage = buildMessage(name, selectedTemplate);
-      box.textContent = currentMessage;
-      box.classList.add('ready');
+    };
+
+    let currentKey = null;
+    let currentIndex = 0;
+
+    // Build mood buttons
+    const moodsEl = document.getElementById('moods');
+    Object.entries(data).forEach(([key, cat]) => {
+      const btn = document.createElement('button');
+      btn.className = 'mood-btn';
+      btn.id = 'btn-' + key;
+      btn.setAttribute('aria-label', cat.label);
+      btn.style.setProperty('--btn-color', cat.color);
+      btn.style.setProperty('--btn-accent', cat.accent);
+      btn.style.setProperty('--btn-shadow', cat.shadow);
+      btn.innerHTML = `<span class="emoji">${cat.emoji}</span>${cat.label}`;
+      btn.onclick = () => selectMood(key);
+      moodsEl.appendChild(btn);
+    });
+
+    function selectMood(key) {
+      if (currentKey === key) return;
+
+      // Update button states
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + key).classList.add('active');
+
+      const cat = data[key];
+      currentKey = key;
+      currentIndex = Math.floor(Math.random() * cat.verses.length);
+
+      // Update page bg
+      document.body.style.background = cat.light;
+
+      // Hide then show card
+      const card = document.getElementById('verseCard');
+      const empty = document.getElementById('emptyState');
+      empty.style.display = 'none';
+      card.classList.remove('visible');
+      card.classList.add('hidden');
+
+      setTimeout(() => {
+        renderVerse();
+        card.classList.remove('hidden');
+        card.classList.add('visible');
+      }, 350);
+
+      // Style share buttons
+      document.getElementById('copyBtn').style.setProperty('--btn-color', cat.color);
+      document.getElementById('copyBtn').style.setProperty('--btn-accent', cat.accent);
+      document.getElementById('shareBtn').style.setProperty('--btn-color', cat.color);
+      document.getElementById('shareBtn').style.setProperty('--btn-accent', cat.accent);
     }
 
-    // Bulletproof copy — works on all browsers & mobile
-    function doCopy(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        return navigator.clipboard.writeText(text);
-      }
-      // Fallback for older browsers / non-HTTPS
-      return new Promise((resolve) => {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.cssText = 'position:absolute;left:-9999px;top:0;';
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, ta.value.length); // iOS
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        resolve();
-      });
+    function renderVerse() {
+      const cat = data[currentKey];
+      const v = cat.verses[currentIndex];
+
+      // Card styles
+      document.getElementById('cardBar').style.background =
+        `linear-gradient(90deg, ${cat.accent}, ${cat.color})`;
+      document.getElementById('verseCard').style.boxShadow =
+        `0 16px 48px ${cat.shadow}`;
+      document.getElementById('verseCard').style.borderColor = cat.accent + '44';
+      document.getElementById('quoteColor').style.color = cat.accent;
+      document.getElementById('cardDivider').style.color = cat.color;
+      document.getElementById('verseRef').style.color = cat.color;
+
+      // Next btn gradient
+      const nb = document.getElementById('nextBtn');
+      nb.style.background = `linear-gradient(135deg, ${cat.color}, ${cat.accent})`;
+      nb.style.setProperty('--btn-shadow', cat.shadow);
+
+      document.getElementById('verseText').textContent = v.text;
+      document.getElementById('verseRef').textContent = v.ref;
     }
 
-    function copyMessage() {
-      if (!currentMessage) { showToast('Enter a name first! 🌷'); return; }
-      doCopy(currentMessage).then(() => {
-        showToast('✅ Copied! Paste into your DM');
-        incrementCount();
-      }).catch(() => {
-        showToast('Long-press the message box to copy manually');
-      });
+    function nextVerse() {
+      if (!currentKey) return;
+      const cat = data[currentKey];
+      const card = document.getElementById('verseCard');
+      card.classList.remove('visible');
+      card.classList.add('hidden');
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % cat.verses.length;
+        renderVerse();
+        card.classList.remove('hidden');
+        card.classList.add('visible');
+      }, 380);
     }
 
-    // Share — opens native share sheet ONLY, does NOT copy
-    function shareMessage() {
-      if (!currentMessage) { showToast('Enter a name first! 🌷'); return; }
+    function copyVerse() {
+      if (!currentKey) return;
+      const v = data[currentKey].verses[currentIndex];
+      const text = `"${v.text}" — ${v.ref}\n\nFor a Mother's Soul 🌷`;
+      navigator.clipboard.writeText(text).then(() => showToast('Verse copied! ✦'));
+    }
+
+    function shareVerse() {
+      if (!currentKey) return;
+      const v = data[currentKey].verses[currentIndex];
+      const text = `"${v.text}" — ${v.ref}\n\nFor a Mother's Soul 🌷`;
       if (navigator.share) {
-        navigator.share({ text: currentMessage })
-          .then(() => incrementCount())
-          .catch(() => {});
+        navigator.share({ title: "For a Mother's Soul", text }).catch(() => {});
       } else {
-        // Desktop fallback
-        doCopy(currentMessage).then(() => {
-          showToast('✅ Copied! Open Messenger or Instagram and paste 💕');
-          incrementCount();
-        });
+        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard! Share anywhere ✦'));
       }
-    }
-
-    function incrementCount() {
-      sentCount++;
-      localStorage.setItem('sentCount', sentCount);
-      localStorage.setItem('sentDate', today);
-      document.getElementById('countNum').textContent = sentCount;
     }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
+      setTimeout(() => t.classList.remove('show'), 2800);
     }
   </script>
 </body>
